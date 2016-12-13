@@ -13,7 +13,8 @@ Works just as well on mobile as on desktop.
 Even though this is a Jam entry, I was busy the first day and made it in 48
 hours.
 
-Thanks to:
+__Thanks to:__
+
 Kenney, for the excellent roguelike sprite sheet
 http://kenney.nl/assets/roguelike-rpg-pack
 
@@ -25,5 +26,7 @@ https://www.typescriptlang.org/
 
 ### License
 Phaser and associated libraries are under the MIT license.
+
 Kenney's roguelike sprite sheet is under the CC0 license.
+
 All other code and assets are under the MIT license.
