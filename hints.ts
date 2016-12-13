@@ -8,7 +8,8 @@ A chair is a table's best friend!
 Check out all the pages of items!
 Make sure there's a door to get in!
 Press the green button in the bottom left to hide these messages
-Don't block the way!`.split('\n');
+Wide objects come in two parts!
+What home doesn't need an anvil?`.split('\n');
 
 class Hints {
     hintText: Phaser.Text;

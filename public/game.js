@@ -126,12 +126,136 @@ var itemTypes = {
             return 50;
         }
     },
-    painting: {
+    paintingGreen: {
+        onWall: true, onFloor: false, key: 'pack', frame: 599,
+        score: function (data) {
+            return 75;
+        }
+    },
+    paintingOrange: {
+        onWall: true, onFloor: false, key: 'pack', frame: 600,
+        score: function (data) {
+            return 75;
+        }
+    },
+    paintingBlue: {
         onWall: true, onFloor: false, key: 'pack', frame: 601,
         score: function (data) {
             return 75;
         }
-    }
+    },
+    doorWideLeft: {
+        onWall: true, onFloor: false, key: 'pack', frame: 370,
+        score: function (data) {
+            var item = data.state.getAt(data.x + 1, data.y);
+            if (item.typeName == 'doorWideRight') {
+                if (!data.firstDoor) {
+                    data.firstDoor = true;
+                    if (clearBelow(data)) {
+                        return 200;
+                    }
+                    return 150;
+                }
+                if (clearBelow(data)) {
+                    return 50;
+                }
+            }
+            return 0;
+        }
+    },
+    doorWideRight: {
+        onWall: true, onFloor: false, key: 'pack', frame: 371,
+        score: function (data) {
+            var item = data.state.getAt(data.x - 1, data.y);
+            if (item.typeName == 'doorWideLeft') {
+                if (clearBelow(data)) {
+                    return 50;
+                }
+                return 0;
+            }
+            return 0;
+        }
+    },
+    tableWideLeft: {
+        onWall: false, onFloor: true, key: 'pack', frame: 197,
+        score: function (data) {
+            var item = data.state.getAt(data.x + 1, data.y);
+            if (item.typeName == 'tableWideRight') {
+                return 50 + countSurrounding(data, /^chair/) * 50;
+            }
+            return 0;
+        }
+    },
+    tableWideRight: {
+        onWall: false, onFloor: true, key: 'pack', frame: 312,
+        score: function (data) {
+            var item = data.state.getAt(data.x - 1, data.y);
+            if (item.typeName == 'tableWideLeft') {
+                return 50 + countSurrounding(data, /^chair/) * 50;
+            }
+            return 0;
+        }
+    },
+    anvil: {
+        onWall: false, onFloor: true, key: 'pack', frame: 15,
+        score: function (data) {
+            return 60;
+        }
+    },
+    bin: {
+        onWall: false, onFloor: true, key: 'pack', frame: 425,
+        score: function (data) {
+            return 50;
+        }
+    },
+    mushroom: {
+        onWall: false, onFloor: true, key: 'pack', frame: 276,
+        score: function (data) {
+            return 25;
+        }
+    },
+    bookshelf: {
+        onWall: true, onFloor: true, key: 'pack', frame: 841,
+        score: function (data) {
+            return clearBelow(data) * 50;
+        }
+    },
+    banner: {
+        onWall: true, onFloor: false, key: 'pack', frame: 52,
+        score: function (data) {
+            return 50;
+        }
+    },
+    counter1: {
+        onWall: true, onFloor: true, key: 'pack', frame: 28,
+        score: function (data) {
+            return scoreCounter(data);
+        }
+    },
+    counter2: {
+        onWall: true, onFloor: true, key: 'pack', frame: 29,
+        score: function (data) {
+            return scoreCounter(data);
+        }
+    },
+    counter3: {
+        onWall: true, onFloor: true, key: 'pack', frame: 30,
+        score: function (data) {
+            return scoreCounter(data);
+        }
+    },
+    counter4: {
+        onWall: true, onFloor: true, key: 'pack', frame: 31,
+        score: function (data) {
+            return scoreCounter(data);
+        }
+    },
+    cupboard: {
+        onWall: true, onFloor: true, key: 'pack', frame: 311,
+        score: function (data) {
+            return clearBelow(data) * 50;
+        }
+    },
 };
 function countSurrounding(data, regex) {
     var total = 0;
@@ -181,11 +305,18 @@ function scoreChair(data) {
     }
     return 0;
 }
+function scoreCounter(data) {
+    return 50 + countHorizontal(data, /^counter/) * 25;
+}
 var itemPages = [
     ['bedHorizontal', 'bedVertical', 'chairLeft', 'chairRight', 'chairUp',
         'chairDown', 'table', 'drawers'],
     ['door', 'mirrorRectangle', 'mirrorCircle', 'windowSquare',
-        'windowCircle', 'torch', 'fireplace', 'painting']
+        'windowCircle', 'torch', 'fireplace', 'banner'],
+    ['doorWideLeft', 'doorWideRight', 'tableWideLeft', 'tableWideRight',
+        'anvil', 'bin', 'mushroom', 'bookshelf'],
+    ['counter1', 'counter2', 'counter3', 'counter4',
+        'paintingGreen', 'paintingOrange', 'paintingBlue', 'cupboard']
 ];
 var Item = (function (_super) {
     __extends(Item, _super);
@@ -262,7 +393,7 @@ var Item = (function (_super) {
     });
     return Item;
 }(Phaser.Sprite));
-var HINTS_LIST = "Make sure there's clear space to get to your chairs!\nThere's no point in a bed you can't get into!\nPaintings are pretty!\nA chair is a table's best friend!\nCheck out all the pages of items!\nMake sure there's a door to get in!\nPress the green button in the bottom left to hide these messages\nDon't block the way!".split('\n');
+var HINTS_LIST = "Make sure there's clear space to get to your chairs!\nThere's no point in a bed you can't get into!\nPaintings are pretty!\nA chair is a table's best friend!\nCheck out all the pages of items!\nMake sure there's a door to get in!\nPress the green button in the bottom left to hide these messages\nWide objects come in two parts!\nWhat home doesn't need an anvil?".split('\n');
 var Hints = (function () {
     function Hints(game) {
         this.game = game;
@@ -314,7 +445,6 @@ var IngameState = (function (_super) {
     IngameState.prototype.preload = function () {
         this.game.initGraphicsSettings();
         this.game.load.spritesheet('pack', 'assets/roguelikeSheet_transparent.png', 16, 16, -1, 0, 1);
-        this.game.load.image('bg', 'assets/testbg.png');
         this.game.load.image('roombg', 'assets/roombg.png');
     };
     IngameState.prototype.create = function () {

@@ -111,12 +111,137 @@ const itemTypes = {
             return 50;
         }
     },
-    painting: {
+    paintingGreen: {
+        onWall: true, onFloor: false, key: 'pack', frame: 599,
+        score: (data) => {
+            return 75;
+        }
+    },
+    paintingOrange: {
+        onWall: true, onFloor: false, key: 'pack', frame: 600,
+        score: (data) => {
+            return 75;
+        }
+    },
+    paintingBlue: {
         onWall: true, onFloor: false, key: 'pack', frame: 601,
         score: (data) => {
             return 75;
         }
-    }
+    },
+    doorWideLeft: {
+        onWall: true, onFloor: false, key: 'pack', frame: 370,
+        score: (data) => {
+            let item = data.state.getAt(data.x+1, data.y);
+            if (item.typeName == 'doorWideRight') {
+                if (!data.firstDoor) {
+                    data.firstDoor = true;
+                    if (clearBelow(data)) {
+                        return 200;
+                    }
+                    return 150;
+                }
+                if (clearBelow(data)) {
+                    return 50;
+                }
+            }
+            return 0;
+        }
+    },
+    doorWideRight: {
+        onWall: true, onFloor: false, key: 'pack', frame: 371,
+        score: (data) => {
+            let item = data.state.getAt(data.x-1, data.y);
+            if (item.typeName == 'doorWideLeft') {
+                if (clearBelow(data)) {
+                    return 50;
+                }
+                return 0;
+            }
+            return 0;
+        }
+    },
+    tableWideLeft: {
+        onWall: false, onFloor: true, key: 'pack', frame: 197,
+        score: (data) => {
+            let item = data.state.getAt(data.x+1, data.y);
+            if (item.typeName == 'tableWideRight') {
+                return 50 + countSurrounding(data, /^chair/) * 50;
+            }
+            return 0;
+        }
+    },
+    tableWideRight: {
+        onWall: false, onFloor: true, key: 'pack', frame: 312,
+        score: (data) => {
+            let item = data.state.getAt(data.x-1, data.y);
+            if (item.typeName == 'tableWideLeft') {
+                return 50 + countSurrounding(data, /^chair/) * 50;
+            }
+            return 0;
+        }
+    },
+    anvil: {
+        onWall: false, onFloor: true, key: 'pack', frame: 15,
+        score: (data) => {
+            return 60;
+        }
+    },
+    bin: {
+        onWall: false, onFloor: true, key: 'pack', frame: 425,
+        score: (data) => {
+            return 50;
+        }
+    },
+    mushroom: {
+        onWall: false, onFloor: true, key: 'pack', frame: 276,
+        score: (data) => {
+            return 25;
+        }
+    },
+    bookshelf: {
+        onWall: true, onFloor: true, key: 'pack', frame: 841,
+        score: (data) => {
+            return clearBelow(data) * 50;
+        }
+    },
+    banner: {
+        onWall: true, onFloor: false, key: 'pack', frame: 52,
+        score: (data) => {
+            return 50;
+        }
+    },
+    counter1: {
+        onWall: true, onFloor: true, key: 'pack', frame: 28,
+        score: (data) => {
+            return scoreCounter(data);
+        }
+    },
+    counter2: {
+        onWall: true, onFloor: true, key: 'pack', frame: 29,
+        score: (data) => {
+            return scoreCounter(data);
+        }
+    },
+    counter3: {
+        onWall: true, onFloor: true, key: 'pack', frame: 30,
+        score: (data) => {
+            return scoreCounter(data);
+        }
+    },
+    counter4: {
+        onWall: true, onFloor: true, key: 'pack', frame: 31,
+        score: (data) => {
+            return scoreCounter(data);
+        }
+    },
+    cupboard: {
+        onWall: true, onFloor: true, key: 'pack', frame: 311,
+        score: (data) => {
+            return clearBelow(data) * 50;
+        }
+    },
+
 };
 
 function countSurrounding(data, regex) {
@@ -163,9 +288,17 @@ function scoreChair(data) {
     return 0;
 }
 
+function scoreCounter(data) {
+    return 50 + countHorizontal(data, /^counter/) * 25;
+}
+
 const itemPages = [
     ['bedHorizontal', 'bedVertical', 'chairLeft', 'chairRight', 'chairUp',
         'chairDown', 'table', 'drawers'],
     ['door', 'mirrorRectangle', 'mirrorCircle', 'windowSquare',
-        'windowCircle', 'torch', 'fireplace', 'painting']
+        'windowCircle', 'torch', 'fireplace', 'banner'],
+    ['doorWideLeft', 'doorWideRight', 'tableWideLeft', 'tableWideRight',
+        'anvil', 'bin', 'mushroom', 'bookshelf'],
+    ['counter1', 'counter2', 'counter3', 'counter4',
+        'paintingGreen', 'paintingOrange', 'paintingBlue', 'cupboard']
 ];
