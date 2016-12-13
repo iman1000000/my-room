@@ -15,7 +15,7 @@ hours.
 
 __Thanks to:__
 
-Kenney, for the excellent roguelike sprite sheet
+Kenney, for the excellent graphics
 http://kenney.nl/assets/roguelike-rpg-pack
 
 The developers of the Phaser game engine
