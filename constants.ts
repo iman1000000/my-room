@@ -10,5 +10,5 @@ const SCORE_START_Y = 0;
 const SCORE_END_Y = 6;
 
 const SCORE_TEXT_STYLE = {fontSize: 14, fontWeight: 'normal'};
-const HINT_TEXT_STYLE = {fontSize: 12, fontWeight: 'normal',
+const HINT_TEXT_STYLE = {fontSize: 12, fontWeight: 'bold',
     boundsAlignH: 'center', wordWrap: true, align: 'center'};

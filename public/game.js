@@ -12,7 +12,7 @@ var SCORE_END_X = 8;
 var SCORE_START_Y = 0;
 var SCORE_END_Y = 6;
 var SCORE_TEXT_STYLE = { fontSize: 14, fontWeight: 'normal' };
-var HINT_TEXT_STYLE = { fontSize: 12, fontWeight: 'normal',
+var HINT_TEXT_STYLE = { fontSize: 12, fontWeight: 'bold',
     boundsAlignH: 'center', wordWrap: true, align: 'center' };
 var itemTypes = {
     bedHorizontal: {
