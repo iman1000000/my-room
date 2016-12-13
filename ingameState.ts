@@ -16,12 +16,10 @@ class IngameState extends Phaser.State {
 
         this.game.load.spritesheet('pack',
            'assets/roguelikeSheet_transparent.png', 16, 16, -1, 0, 1);
-        this.game.load.image('bg', 'assets/testbg.png');
         this.game.load.image('roombg', 'assets/roombg.png');
     }
 
     create() {
-        // let bg = this.game.add.tileSprite(0, 0, 160, 160, 'bg');
         let bg = this.game.add.image(0, 0, 'roombg');
         let prevButton = this.game.add.button(0, 8*16, 'pack',
               this.prevButtonCallback, this, 1650, 1650, 1648, 1650);
